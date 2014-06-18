@@ -1,12 +1,4 @@
-Data_Science
-============
+Basic Algorithms
+================
 
-Some Data Science projects about the coursera Courses
-
-Hello World!
-
-## Heading
-### Tertiary Heading
-
-* first item in list
-* second item in list
+This repository will store some implementation of basic algorithms wrien in java.
