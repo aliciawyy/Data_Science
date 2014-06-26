@@ -26,6 +26,8 @@ public class WtQuickUnionUF
     }
     /**
      * The smaller tree always goes down.
+     * The complexity is lgN instead of N in ordinary QuickUnion
+     * approach.
      */
     public void union(int p, int q)
     {
@@ -33,12 +35,22 @@ public class WtQuickUnionUF
         int j = root(q);
         if ( i == j ) return;
         
-        if ( sz[i] < sz[j] ) { // i is no longer a root
+        if ( sz[i] < sz[j] ) { 
+        // i is no longer a root, so we don't need to update the size
             id[i] = j; sz[j] += sz[i];
         }
         else {
             id[j] = i; sz[i] += sz[j]; 
+        }       
+    }
+    
+    public void rootWithPathCompress(int p)
+    {
+        while (id[p] != p) { 
+            // point the parent of p to its grandparent
+            id[p] = id[id[p]];
+            p = id[p]; 
         }
-        
+        return p;   
     }
 }
