@@ -1,4 +1,4 @@
-package discussions;
+package binarysearch;
 
 import java.util.*;
 

@@ -1,8 +1,6 @@
-package discussions;
+package binarysearch;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 300. Longest Increasing Subsequence
@@ -35,7 +33,6 @@ public class LongestIncreasingSubsequence {
 
     /**
      * Runtime: 9 ms, faster than 71.87% of Java online submissions for Longest Increasing Subsequence.
-     * Memory Usage: 36.8 MB, less than 5.01% of Java online submissions for Longest Increasing Subsequence.
      * Memory Usage: 36.8 MB, less than 5.01% of Java online submissions for Longest Increasing Subsequence.
      */
     public int lengthOfLIS1(int[] nums) {
