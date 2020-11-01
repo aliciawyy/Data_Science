@@ -9,40 +9,30 @@ public class FindKParisWithSmallestSum {
 
     /**
      * Priority queue implementation
-     * Runtime: 9 ms, faster than 50.26% of Java online submissions for Find K Pairs with Smallest Sums.
-     * Memory Usage: 45.1 MB, less than 5.15% of Java online submissions for Find K Pairs with Smallest Sums.
+     * Runtime: 5 ms, faster than 64.97% of Java online submissions for Find K Pairs with Smallest Sums.
+     * Memory Usage: 39.8 MB, less than 5.15% of Java online submissions for Find K Pairs with Smallest Sums.
      */
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         List<List<Integer>> result = new ArrayList<>();
-        PriorityQueue<Map.Entry<Integer, List<Integer>>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getKey));
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>(Comparator.comparing(a -> a.get(0)));
         int m = nums1.length, n = nums2.length;
         if (m == 0 || n == 0) {
             return result;
         }
         boolean[][] seen = new boolean[m][n];
-        pq.add(new AbstractMap.SimpleImmutableEntry<>(nums1[0] + nums2[0], List.of(0, 0)));
-        seen[0][0] = true;
-        for (int i = 1; i < m; ++i) {
-            seen[i][0] = true;
-            pq.add(new AbstractMap.SimpleImmutableEntry<>(nums1[i] + nums2[0], List.of(i, 0)));
-        }
-        for (int j = 1; j < n; ++j) {
-            seen[0][j] = true;
-            pq.add(new AbstractMap.SimpleImmutableEntry<>(nums1[0] + nums2[j], List.of(0, j)));
-        }
+        pq.add(List.of(nums1[0] + nums2[0], 0, 0));
         while (!pq.isEmpty() && result.size() < k) {
             var entry = pq.poll();
-            var indexes = entry.getValue();
-            int i = indexes.get(0), j = indexes.get(1);
+            int i = entry.get(1), j = entry.get(2);
             result.add(List.of(nums1[i], nums2[j]));
             int iNext = i + 1, jNext = j + 1;
             if (iNext < m && !seen[iNext][j]) {
                 seen[iNext][j] = true;
-                pq.add(new AbstractMap.SimpleImmutableEntry<>(nums1[iNext] + nums2[j], List.of(iNext, j)));
+                pq.add(List.of(nums1[iNext] + nums2[j], iNext, j));
             }
             if (jNext < n && !seen[i][jNext]) {
                 seen[i][jNext] = true;
-                pq.add(new AbstractMap.SimpleImmutableEntry<>(nums1[i] + nums2[jNext], List.of(i, jNext)));
+                pq.add(List.of(nums1[i] + nums2[jNext], i, jNext));
             }
         }
         return result;
