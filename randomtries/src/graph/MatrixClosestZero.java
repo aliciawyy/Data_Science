@@ -1,0 +1,60 @@
+package graph;
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 542. 01 Matrix
+ * Given a matrix consists of 0 and 1, find the distance of the nearest 0 for each cell.
+ * The distance between two adjacent cells is 1.
+ */
+public class MatrixClosestZero {
+
+    /**
+     * Runtime: 50 ms
+     * Memory Usage: 47.9 MB
+     */
+    public int[][] updateMatrix(int[][] matrix) {
+        if (matrix.length == 0) {
+            return null;
+        }
+        final int m = matrix.length, n = matrix[0].length;
+        final int[][] dist = new int[m][n];
+        ArrayDeque<List<Integer>> queue = new ArrayDeque<>();
+        for (int i = 0; i < m; ++i) {
+            Arrays.fill(dist[i], -1);
+            for (int j = 0; j < n; ++j) {
+                if (matrix[i][j] == 0) {
+                    queue.addLast(List.of(i, j, 0));
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            var item = queue.pollFirst();
+            int x = item.get(0), y = item.get(1), count = item.get(2);
+            if (x < 0 || x >= m || y < 0 || y >= n || dist[x][y] >= 0) {
+                continue;
+            }
+            dist[x][y] = count;
+            ++count;
+            queue.addLast(List.of(x, y - 1, count));
+            queue.addLast(List.of(x, y + 1, count));
+            queue.addLast(List.of(x - 1, y, count));
+            queue.addLast(List.of(x + 1, y, count));
+        }
+        return dist;
+    }
+
+    public static void main(String[] args) {
+        var solver = new MatrixClosestZero();
+        var answer1 = solver.updateMatrix(new int[][]{
+                new int[]{0, 0, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 1, 1},
+        });
+        for (var row: answer1) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
+}

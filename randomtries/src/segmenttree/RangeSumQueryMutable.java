@@ -1,5 +1,8 @@
 package segmenttree;
 
+/**
+ * 307. Range Sum Query - Mutable
+ */
 public class RangeSumQueryMutable {
 
     /**
