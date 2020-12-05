@@ -6,7 +6,7 @@ import java.util.*;
  * LeetCode 399. Evaluate Division
  * 0.0 < values[i] <= 20.0
  *
- * Runtime: 1 ms, faster than 83.21% of Java online submissions for Evaluate Division.
+ * Runtime: 1 ms, faster than 86.93% of Java online submissions for Evaluate Division.
  * Memory Usage: 37.8 MB, less than 6.23% of Java online submissions for Evaluate Division.
  */
 public class EvaluateDivision {
@@ -61,13 +61,13 @@ public class EvaluateDivision {
         int rootQ = root(q);
         if (mSize[rootP] > mSize[rootQ]) {
             mParent[rootQ] = rootP;
-            mValue[rootP][rootQ] = mValue[rootP][p] * value / mValue[rootQ][q];
+            mValue[rootP][rootQ] = mValue[rootP][p] * value * mValue[q][rootQ];
             mValue[rootQ][rootP] = 1. / mValue[rootP][rootQ];
             // Attach the smaller tree to big tree
             mSize[rootP] += mSize[rootQ];
         } else {
             mParent[rootP] = rootQ;
-            mValue[rootQ][rootP] = mValue[rootQ][q] / value / mValue[rootP][p];
+            mValue[rootQ][rootP] = mValue[rootQ][q] / value * mValue[p][rootP];
             mValue[rootP][rootQ] = 1. / mValue[rootQ][rootP];
             mSize[rootQ] += mSize[rootP];
         }
@@ -84,15 +84,16 @@ public class EvaluateDivision {
     }
 
     private int root(int p) {
-        if (mParent[p] == p) {
-            return p;
+        int q = p;
+        double factor = 1.;
+        while (q != mParent[q]) {
+            factor *= mValue[q][mParent[q]];
+            q = mParent[q];
         }
-        int parent = mParent[p];
-        int parentRoot = root(parent);
-        mValue[parentRoot][p] = mValue[parentRoot][parent] * mValue[parent][p];
-        mValue[p][parentRoot] = 1. / mValue[parentRoot][p];
-        mParent[p] = parentRoot;
-        return parentRoot;
+        mValue[p][q] = factor;
+        mValue[q][p] = 1. / factor;
+        mParent[p] = q;
+        return q;
     }
 
     public static void main(String[] args) {
